@@ -1,0 +1,26 @@
+* {
+    margin: 0 auto;
+    padding: 0px;
+}
+
+body {
+    background-color: grey;
+}
+
+.container {
+    margin: 0 auto;
+    width: 100%;
+    height: 550px;
+}
+
+
+td {
+    padding: 0;
+    width: 2px;
+    height: 2px;
+    background-color: dimgrey;
+}
+
+.alive {
+    background-color: white;
+}
