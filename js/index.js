@@ -2,6 +2,7 @@
  * Created by kaala on 10/11/16.
  */
 var container = document.getElementsByClassName("container")[0];
+var start = document.getElementById("start");
 var rows = 150;
 var cols = 150;
 var grid = initializeGrid(rows, cols);
@@ -61,58 +62,31 @@ function init() {
     table = createTable(rows, cols);
     container.appendChild(table);
     updateTable(grid);
-    var tempGrid = grid;
+}
 
-    var intervalId = window.setInterval(function () {
+var intervalId;
+var startToggle = 0;
+start.addEventListener("click", function (event) {
+    if (startToggle == 0) {
+        intervalId = startGame();
+        startToggle = 1;
+        start.innerHTML = "Stop";
+    }else {
+        clearInterval(intervalId);
+        startToggle = 0;
+        start.innerHTML = "Start";
+    }
+
+});
+
+function startGame() {
+    var tempGrid = grid;
+    return window.setInterval(function () {
         tempGrid = scan(tempGrid);
         updateTable(tempGrid);
-    }, 50);
+    }, 500);
 }
 
-function scan(gridIn) {
-    var tempGrid = [];
-    for (var i = 0; i < rows; i++) {
-        var tempRow = [];
-        for (var j = 0; j < cols; j++) {
-            var result = deadAliveOrReproduce(gridIn, i, j);
-            if (result == -1) tempRow.push(0);
-            else if (result == 1) tempRow.push(1);
-            else tempRow.push(gridIn[i][j]);
-        }
-        tempGrid.push(tempRow);
-    }
-    return tempGrid;
-}
-
-function deadAliveOrReproduce(grid, indexX, indexY) {
-    var neighbours = getNeighbours(grid, indexX, indexY);
-    var aliveNeighbours = neighbours.filter(function (val) {
-        return val == 1;
-    });
-
-    //dead
-    if (aliveNeighbours.length < 2 || aliveNeighbours.length > 3) return -1;
-
-    //reproduce
-    if (aliveNeighbours.length == 3 && grid[indexX][indexY] == 0) return 1;
-
-    //alive
-    return 0;
-}
-
-function getNeighbours(grid, indexX, indexY) {
-    var neighbours = [];
-    for (var row = indexX - 1; row <= indexX + 1; row++) {
-        for (var col = indexY - 1; col <= indexY + 1; col++) {
-            if (row >= 0 && row < grid[0].length
-                && col >= 0 && col < grid.length
-                && !(row == indexX && col == indexY)) {
-                neighbours.push(grid[row][col]);
-            }
-        }
-    }
-    return neighbours;
-}
 
 function initializeGrid(row, col) {
     var tempGrid = [];
@@ -124,36 +98,4 @@ function initializeGrid(row, col) {
         tempGrid.push(temp);
     }
     return tempGrid;
-}
-
-
-function createTable(rows, cols) {
-    var tempTable = document.createElement('table');
-
-    for (var row = 0; row < rows; row++) {
-        var tempTr = document.createElement('tr');
-        for (var col = 0; col < cols; col++) {
-            var tempTd = document.createElement('td');
-
-            tempTr.appendChild(tempTd);
-        }
-
-        tempTable.appendChild(tempTr);
-    }
-
-    return tempTable;
-}
-
-function updateTable(refGrid) {
-    var tableRow = table.children;
-    for (var row = 0; row < tableRow.length; row++) {
-        var td = tableRow[row].getElementsByTagName('td');
-        for (var i in td) {
-            if (refGrid[row][i] == 1) {
-                td[i].className = "alive";
-            } else {
-                td[i].className = "";
-            }
-        }
-    }
 }
