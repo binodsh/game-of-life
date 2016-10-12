@@ -3,25 +3,27 @@
  */
 
 function scan(gridIn) {
-    var totalRows = gridIn.length;
-    var totalCols = gridIn[0].length;
+    var array = gridIn.getArray();
+    var totalRows = array.length;
+    var totalCols = array[0].length;
 
-    var tempGrid = [];
+    var tempArray = [];
     for (var row = 0; row < totalRows; row++) {
         var tempRow = [];
         for (var col = 0; col < totalCols; col++) {
-            var result = deadAliveOrReproduce(gridIn, row, col);
+            var result = deadAliveOrReproduce(array, row, col);
             if (result == -1) tempRow.push(0);
             else if (result == 1) tempRow.push(1);
-            else tempRow.push(gridIn[row][col]);
+            else tempRow.push(array[row][col]);
         }
-        tempGrid.push(tempRow);
+        tempArray.push(tempRow);
     }
-    return tempGrid;
+
+    gridIn.setArray(tempArray);
 }
 
-function deadAliveOrReproduce(grid, row, col) {
-    var neighbours = getNeighbours(grid, row, col);
+function deadAliveOrReproduce(array, row, col) {
+    var neighbours = getNeighbours(array, row, col);
     var aliveNeighbours = neighbours.filter(function (val) {
         return val == 1;
     });
@@ -30,20 +32,20 @@ function deadAliveOrReproduce(grid, row, col) {
     if (aliveNeighbours.length < 2 || aliveNeighbours.length > 3) return -1;
 
     //reproduce
-    if (aliveNeighbours.length == 3 && grid[row][col] == 0) return 1;
+    if (aliveNeighbours.length == 3 && array[row][col] == 0) return 1;
 
     //alive
     return 0;
 }
 
-function getNeighbours(grid, row, col) {
+function getNeighbours(array, row, col) {
     var neighbours = [];
     for (var nRow = row - 1; nRow <= row + 1; nRow++) {
         for (var nCol = col - 1; nCol <= col + 1; nCol++) {
-            if (nRow >= 0 && nRow < grid.length
-                && nCol >= 0 && nCol < grid[0].length
+            if (nRow >= 0 && nRow < array.length
+                && nCol >= 0 && nCol < array[0].length
                 && !(nRow == row && nCol == col)) {
-                neighbours.push(grid[nRow][nCol]);
+                neighbours.push(array[nRow][nCol]);
             }
         }
     }

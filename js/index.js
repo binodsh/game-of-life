@@ -3,76 +3,18 @@
  */
 var container = document.getElementsByClassName("container")[0];
 var start = document.getElementById("start");
-var rows = 100;
-var cols = 150;
-var grid = initializeGrid(rows, cols);
-
-//glider
-// grid[5][3] = 1;
-// grid[6][4] = 1;
-// grid[4][5] = 1;
-// grid[5][5] = 1;
-// grid[6][5] = 1;
-
-
-//small exploder
-
-// grid[55][54] = 1;
-// grid[54][55] = 1;
-// grid[55][55] = 1;
-// grid[56][55] = 1;
-// grid[54][56] = 1;
-// grid[56][56] = 1;
-// grid[55][57] = 1;
-
-
-//exploder
-// grid[50][50] = 1;
-// grid[50][51] = 1;
-// grid[50][52] = 1;
-// grid[50][53] = 1;
-// grid[50][54] = 1;
-//
-// grid[52][50] = 1;
-// grid[52][54] = 1;
-//
-// grid[54][50] = 1;
-// grid[54][51] = 1;
-// grid[54][52] = 1;
-// grid[54][53] = 1;
-// grid[54][54] = 1;
-
-//10 cell row
-grid[50][50] = 1;
-grid[51][50] = 1;
-grid[52][50] = 1;
-grid[53][50] = 1;
-grid[54][50] = 1;
-grid[55][50] = 1;
-grid[56][50] = 1;
-grid[57][50] = 1;
-grid[58][50] = 1;
-grid[59][50] = 1;
-
-grid[0][50] = 1;
-grid[1][50] = 1;
-grid[2][50] = 1;
-grid[3][50] = 1;
-grid[4][50] = 1;
-grid[5][50] = 1;
-grid[6][50] = 1;
-grid[7][50] = 1;
-grid[8][50] = 1;
-grid[9][50] = 1;
-
-
-
+var rows = 65;
+var cols = 140;
+var grid = new Grid(rows, cols);
 var table;
+
+grid.init();
+
 init();
 function init() {
-    table = createTable(rows, cols);
+    table = createTable(grid, rows, cols);
     container.appendChild(table);
-    updateTable(grid);
+    updateTable(table, grid.getArray());
 }
 
 var intervalId;
@@ -87,26 +29,12 @@ start.addEventListener("click", function (event) {
         startToggle = 0;
         start.innerHTML = "Start";
     }
-
 });
 
 function startGame() {
     var tempGrid = grid;
     return window.setInterval(function () {
-        tempGrid = scan(tempGrid);
-        updateTable(tempGrid);
-    }, 500);
-}
-
-
-function initializeGrid(row, col) {
-    var tempGrid = [];
-    for (var i = 0; i < row; i++) {
-        var temp = [];
-        for (var j = 0; j < col; j++) {
-            temp.push(0);
-        }
-        tempGrid.push(temp);
-    }
-    return tempGrid;
+        scan(tempGrid);
+        updateTable(table, tempGrid.getArray());
+    }, 50);
 }
