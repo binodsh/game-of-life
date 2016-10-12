@@ -3,7 +3,7 @@
  */
 var container = document.getElementsByClassName("container")[0];
 var start = document.getElementById("start");
-var rows = 150;
+var rows = 100;
 var cols = 150;
 var grid = initializeGrid(rows, cols);
 
@@ -53,6 +53,17 @@ grid[56][50] = 1;
 grid[57][50] = 1;
 grid[58][50] = 1;
 grid[59][50] = 1;
+
+grid[0][50] = 1;
+grid[1][50] = 1;
+grid[2][50] = 1;
+grid[3][50] = 1;
+grid[4][50] = 1;
+grid[5][50] = 1;
+grid[6][50] = 1;
+grid[7][50] = 1;
+grid[8][50] = 1;
+grid[9][50] = 1;
 
 
 
